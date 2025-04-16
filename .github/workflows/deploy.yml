@@ -36,19 +36,19 @@ jobs:
               echo "::set-output name=exists::false"
           fi
         env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
+          HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Create Heroku app
         if: steps.check_db_app.outputs.exists == 'false'
         run: heroku create $HEROKU_DB_APP_NAME
         env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
+          HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Tag and push to Heroku
         env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
+          HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           docker tag chromadb/chroma:0.5.3 registry.heroku.com/$HEROKU_DB_APP_NAME/web
@@ -57,7 +57,7 @@ jobs:
       - name: Set environment variables
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
+          HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
           CHROMA_SERVER_HOST: 0.0.0.0
           CHROMA_SERVER_PORT: 8000
           CHROMA_SERVER_AUTHN_PROVIDER: chromadb.auth.token_authn.TokenAuthenticationServerProvider
@@ -71,5 +71,5 @@ jobs:
       - name: Release the app
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
+          HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
         run: heroku container:release web --app $HEROKU_DB_APP_NAME
