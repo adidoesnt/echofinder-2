@@ -1,7 +1,7 @@
 import telebot
 from telebot.types import Message
 
-from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, config
+from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, config
 from src.echofinder.bot.handlers import save_messages
 
 if not TELEGRAM_BOT_TOKEN:
@@ -102,5 +102,8 @@ def init_bot():
         print("Starting infinity polling...")
         bot.infinity_polling()
     else:
-        # TODO: Add webhook setup
-        pass
+        print(f"Setting webhook to {TELEGRAM_WEBHOOK_URL}")
+        bot.set_webhook(url=TELEGRAM_WEBHOOK_URL)
+        
+        print("Webhook set")
+        
