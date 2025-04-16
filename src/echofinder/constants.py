@@ -10,6 +10,12 @@ ENV = os.getenv("ENV", "dev")
 # Telegram
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
+# Chroma
+CHROMA_CLIENT_AUTH_CREDENTIALS = os.getenv("CHROMA_CLIENT_AUTH_CREDENTIALS")
+CHROMA_CLIENT_AUTH_PROVIDER = os.getenv("CHROMA_CLIENT_AUTH_PROVIDER")
+CHROMA_CLIENT_HOST = os.getenv("CHROMA_CLIENT_HOST")
+CHROMA_CLIENT_PORT = os.getenv("CHROMA_CLIENT_PORT")
+
 # Config
 config = None
 with open("src/echofinder/config.json", "r") as f:

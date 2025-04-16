@@ -1,0 +1,12 @@
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    volumes:
+      - chroma_data:/data
+
+volumes:
+  chroma_data:

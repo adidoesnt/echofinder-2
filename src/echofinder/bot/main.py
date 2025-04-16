@@ -63,6 +63,7 @@ def init_bot():
     set_bot_commands()
     
     if ENV == "dev":
+        print("Starting infinity polling...")
         bot.infinity_polling()
     else:
         # TODO: Add webhook setup
