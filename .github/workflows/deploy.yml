@@ -68,6 +68,12 @@ jobs:
           heroku config:set CHROMA_SERVER_AUTHN_PROVIDER=$CHROMA_SERVER_AUTHN_PROVIDER --app $HEROKU_DB_APP_NAME
           heroku config:set CHROMA_SERVER_AUTHN_CREDENTIALS=$CHROMA_SERVER_AUTHN_CREDENTIALS --app $HEROKU_DB_APP_NAME
 
+      - name: Set the stack to container
+        run: heroku stack:set container --app $HEROKU_DB_APP_NAME
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
+
       - name: Release the app
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
