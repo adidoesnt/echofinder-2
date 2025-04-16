@@ -206,7 +206,7 @@ def init_bot():
         async def webhook_handler(request: Request):
             print("Received webhook request")
             
-            await bot.process_new_updates([Update.de_json(await request.json())])
+            await bot.process_new_updates([Update.de_json(request.json())])
             return {"ok": True}
         
         uvicorn.run(app, host="0.0.0.0", port=int(TELEGRAM_BOT_SERVER_PORT))
