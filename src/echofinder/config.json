@@ -12,6 +12,14 @@
       "examples": {
         "description": "View example commands",
         "message": "An example of the command you can use to search for a message is \"/search sports\". This will search for any messages that are related to sports.\n\nAn example of the command you can use to summarise a message thread is \"/tldr 10\". This will summarise the last 10 messages in the thread."
+      },
+      "search": {
+        "description": "Search for a message",
+        "message": "The message search feature is currently under development. Please check back soon!"
+      },
+      "tldr": {
+        "description": "Summarise a message thread",
+        "message": "The message summarisation feature is currently under development. Please check back soon!"
       }
     }
   }
