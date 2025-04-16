@@ -200,13 +200,9 @@ def init_bot():
         print(f"Starting FastAPI server on port {TELEGRAM_BOT_SERVER_PORT}")
         app = FastAPI()
         
-        @app.post("/{token}")
-        async def webhook_handler(request: Request, token: str):
+        @app.post("/webhook")
+        async def webhook_handler(request: Request):
             print("Received webhook request")
-            
-            if token != TELEGRAM_BOT_TOKEN:
-                print(f"Invalid token: {token}")
-                return {"ok": False}
             
             await bot.process_new_updates([Update.de_json(await request.json())])
             return {"ok": True}
