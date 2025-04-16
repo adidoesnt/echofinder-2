@@ -194,6 +194,9 @@ def init_bot():
         print("Starting infinity polling...")
         bot.infinity_polling()
     else:
+        print("Removing existing webhook...")
+        bot.remove_webhook()
+        
         print(f"Setting webhook to {TELEGRAM_WEBHOOK_URL}")
         bot.set_webhook(url=TELEGRAM_WEBHOOK_URL)
         print("Webhook set")
