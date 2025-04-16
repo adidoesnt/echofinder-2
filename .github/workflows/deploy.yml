@@ -1,0 +1,58 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-chromadb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Login to Heroku Container Registry
+        run: |
+          heroku container:login
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Pull ChromaDB image
+        run: docker pull chromadb/chroma:0.5.3
+
+      - name: Set environment variables
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          CHROMA_SERVER_HOST: 0.0.0.0
+          CHROMA_SERVER_PORT: 8000
+          CHROMA_SERVER_AUTHN_PROVIDER: chromadb.auth.token_authn.TokenAuthenticationServerProvider
+          CHROMA_SERVER_AUTHN_CREDENTIALS: ${{ secrets.CHROMA_AUTH_TOKEN }}
+        run: |
+          heroku config:set CHROMA_SERVER_HOST=$CHROMA_SERVER_HOST --app $HEROKU_APP_NAME
+          heroku config:set CHROMA_SERVER_PORT=$CHROMA_SERVER_PORT --app $HEROKU_APP_NAME
+          heroku config:set CHROMA_SERVER_AUTHN_PROVIDER=$CHROMA_SERVER_AUTHN_PROVIDER --app $HEROKU_APP_NAME
+          heroku config:set CHROMA_SERVER_AUTHN_CREDENTIALS=$CHROMA_SERVER_AUTHN_CREDENTIALS --app $HEROKU_APP_NAME
+
+      - name: Tag and push ChromaDB image
+        run: |
+          docker tag chromadb/chroma:0.5.3 registry.heroku.com/echofinder-chromadb/web
+          docker push registry.heroku.com/echofinder-chromadb/web
+
+      - name: Tag and push to Heroku
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: |
+          docker tag chromadb/chroma:0.5.3 registry.heroku.com/$HEROKU_APP_NAME/web
+          docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+      - name: Release the app
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: heroku container:release web --app $HEROKU_APP_NAME
