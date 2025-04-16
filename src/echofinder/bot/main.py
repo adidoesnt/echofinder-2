@@ -1,5 +1,5 @@
 import telebot
-from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 import json
 
 from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, config
@@ -67,7 +67,7 @@ def process_search_query(message: Message, query: str):
                 "from_id": results['metadatas'][i]['sender_id']
             })
         ))
-    reply += f"\n{i+1}. {document}"
+        reply += f"\n{i+1}. {document}"
     
     bot.reply_to(
         message,
@@ -76,18 +76,29 @@ def process_search_query(message: Message, query: str):
     )
 
 @bot.callback_query_handler(func=lambda call: True)
-def handle_search_result_selection(call):
+def handle_search_result_selection(call: CallbackQuery):
     data = json.loads(call.data)
     
     if data['type'] == "see_suggestion":
         msg_id = data['id']
         from_id = data['from_id']
         
+        print(f"Referencing message {msg_id} from {from_id}")
+        
         bot.send_message(
             chat_id=call.message.chat.id,
             text="^",
             reply_to_message_id=int(msg_id)
         )
+        
+        print(f"Checking from_id {from_id} against call.from_user.id {call.from_user.id}")
+        
+        if int(from_id) == int(call.from_user.id):
+            bot.delete_message(
+                chat_id=call.message.chat.id,
+                message_id=call.message.message_id
+            )
+            
         bot.answer_callback_query(call.id, "Message referenced")
     else:
         print(f"Unknown callback data: {data}")
@@ -102,7 +113,7 @@ def tldr_handler(message: Message):
         n = message.text.split(" ", 1)[1]
         print(f"Summarise {n} messages")
         
-        # TODO: Implement search with query
+        # TODO: Implement tldr functionality
         reply = f"Summarising {n} messages"
         bot.reply_to(message, reply)
     except IndexError:

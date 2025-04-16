@@ -1,5 +1,6 @@
 from src.echofinder.openai.embedding import embed_text
 from src.echofinder.chromadb.main import client
+from src.echofinder.constants import CHROMA_N_RESULTS
 
 def upsert_embeddings(ids: list[str], documents: list[str], metadata: list[dict[str, str]], collection_name: str):
     print(f"Fetching collection: {collection_name}")
@@ -32,7 +33,7 @@ def search_embeddings(query: str, collection_name: str, where: dict[str, str]):
     print(f"Searching for {query} in collection: {collection_name}")
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=10,
+        n_results=CHROMA_N_RESULTS,
         where=where,
     )
     
