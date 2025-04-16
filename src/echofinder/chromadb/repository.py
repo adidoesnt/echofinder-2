@@ -20,3 +20,25 @@ def upsert_embeddings(ids: list[str], documents: list[str], metadata: list[dict[
     
     print(f"Upserted {len(ids)} vectors into collection: {collection_name}")
     
+def search_embeddings(query: str, collection_name: str, where: dict[str, str]):
+    print(f"Searching for {query} in collection: {collection_name}")
+    collection = client.get_or_create_collection(
+        name=collection_name,
+    )
+    
+    print(f"Embedding query")
+    query_embedding = embed_text(query)
+    
+    print(f"Searching for {query} in collection: {collection_name}")
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=10,
+        where=where,
+    )
+    
+    print(f"Found {len(results['documents'][0])} results")
+    return {
+        "documents": results['documents'][0],
+        "ids": results['ids'][0],
+        "metadatas": results['metadatas'][0],
+    }

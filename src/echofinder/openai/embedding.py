@@ -7,5 +7,5 @@ def embed_text(text: str):
     
     print(f"Received embedding response: {response}")
     
-    print(f"Parsed embedding: {response.data[0].embedding}")
+    print(f"Parsed embedding")
     return response.data[0].embedding

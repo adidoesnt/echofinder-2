@@ -1,7 +1,7 @@
 from telebot.types import Message
 
 from src.echofinder.constants import CHROMA_COLLECTION_NAME
-from src.echofinder.chromadb.repository import upsert_embeddings
+from src.echofinder.chromadb.repository import upsert_embeddings, search_embeddings
 from src.echofinder.bot.types import MessageInfo
 
 def save_messages(messages: list[Message]):
@@ -25,3 +25,11 @@ def save_messages(messages: list[Message]):
         print(f"Saved {len(messages)} messages")
     except Exception as e:
         print(f"Error saving messages: {e}")
+        
+def search_messages(query: str, chat_id: int):
+    print(f"Searching for {query} in collection: {CHROMA_COLLECTION_NAME}")
+    
+    results = search_embeddings(query, CHROMA_COLLECTION_NAME, {"chat_id": chat_id})
+    print(f"Found {len(results['documents'])} results")
+    
+    return results
