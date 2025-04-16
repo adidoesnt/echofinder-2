@@ -1,9 +1,20 @@
 from telebot.types import Message
+from pydantic import BaseModel, Field
+from typing import Optional
+from datetime import datetime
 
 from src.echofinder.constants import CHROMA_COLLECTION_NAME
 from src.echofinder.chromadb.repository import upsert_embeddings, search_embeddings, get_embeddings
-from src.echofinder.bot.types import MessageInfo
 from src.echofinder.openai.summarisation import get_prompt_response
+
+class MessageInfo(BaseModel):
+    message_id: int
+    username: Optional[str] = None
+    firstname: str
+    lastname: Optional[str] = None
+    sender_id: int
+    chat_id: int
+    sent_at: datetime = Field(default_factory=datetime.now)
 
 def save_messages(messages: list[Message]):
     print(f"Saving {len(messages)} messages")
