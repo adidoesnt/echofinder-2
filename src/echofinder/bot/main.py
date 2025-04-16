@@ -206,10 +206,12 @@ def init_bot():
         security = OnlyTelegramNetworkWithSecret(real_secret=TELEGRAM_WEBHOOK_SECRET)
         
         @app.post("/webhook", dependencies=[Depends(security)])
-        async def webhook_handler(request: Request):
+        async def webhook_handler(update: dict):
             print("Received webhook request")
             
-            await bot.process_new_updates([Update.de_json(request.json())])
+            update = Update.de_json(update)
+            await bot.process_new_updates([update])
+            
             return {"ok": True}
         
         uvicorn.run(app, host="0.0.0.0", port=int(TELEGRAM_BOT_SERVER_PORT))
