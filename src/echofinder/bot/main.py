@@ -31,24 +31,53 @@ def examples_handler(message: Message):
     
 @bot.message_handler(commands=['search'])
 def search_handler(message: Message):
-    # TODO: Implement search functionality
-    
     print(f"Received search command from {message.from_user.username}")
     
-    reply: str = f"{config['bot']['handlers']['search']['message']}"
-    bot.reply_to(message, reply) 
+    try:
+        query = message.text.split(" ", 1)[1]
+        print(f"Search query: {query}")
+        
+        # TODO: Implement search with query
+        reply = f"Searching for: {query}"
+        bot.reply_to(message, reply)
+    except IndexError:
+        reply = bot.reply_to(message, "What would you like to search for?")
+        bot.register_next_step_handler(reply, process_search_query)
+
+def process_search_query(message: Message):
+    query = message.text
+    print(f"Processing search query: {query}")
+    
+    # TODO: Implement search with query
+    reply = f"Searching for: {query}"
+    bot.reply_to(message, reply)
     
 @bot.message_handler(commands=['tldr'])
 def tldr_handler(message: Message):
-    # TODO: Implement tldr functionality
-    
     print(f"Received tldr command from {message.from_user.username}")
-    reply: str = f"{config['bot']['handlers']['tldr']['message']}"
+    
+    try:
+        n = message.text.split(" ", 1)[1]
+        print(f"Summarise {n} messages")
+        
+        # TODO: Implement search with query
+        reply = f"Summarising {n} messages"
+        bot.reply_to(message, reply)
+    except IndexError:
+        reply = bot.reply_to(message, "How many messages would you like to summarise?")
+        bot.register_next_step_handler(reply, process_tldr_query)
+        
+def process_tldr_query(message: Message):
+    n = message.text
+    print(f"Processing tldr command for {n} messages")
+    
+    # TODO: Implement tldr functionality
+    reply = f"Summarising {n} messages"
     bot.reply_to(message, reply)
     
 # Save all messages that are not commands
 @bot.message_handler(func=lambda message: True)
-def echo_all(message: Message):
+def save_all_messages(message: Message):
     print(f"Saving message from {message.from_user.username}: {message.text}")
     save_messages([message])
     
