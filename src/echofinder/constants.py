@@ -16,6 +16,10 @@ CHROMA_CLIENT_AUTH_PROVIDER = os.getenv("CHROMA_CLIENT_AUTH_PROVIDER")
 CHROMA_CLIENT_HOST = os.getenv("CHROMA_CLIENT_HOST")
 CHROMA_CLIENT_PORT = os.getenv("CHROMA_CLIENT_PORT")
 
+# OpenAI
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+
 # Config
 config = None
 with open("src/echofinder/config.json", "r") as f:
