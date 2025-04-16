@@ -1,12 +1,18 @@
 {
-    "bot": {
-        "handlers": {
-            "start": {
-                "message": "Welcome to EchoFinder 2! I'm Finn, and I'm here to help you find any messages that you want to revisit, or summarise message threads of your choosing."
-            },
-            "help": {
-                "message": "To search for a message, type /search, followed by any details you remember about the message.\n\nTo summarise a message thread, type /tldr, followed by the number of messages you would like to summarise."
-            }
-        }
+  "bot": {
+    "handlers": {
+      "start": {
+        "description": "Start the bot",
+        "message": "Welcome to EchoFinder 2! I'm Finn, and I'm here to help you find any messages that you want to revisit, or summarise message threads of your choosing."
+      },
+      "help": {
+        "description": "Get help",
+        "message": "To search for a message, type /search, followed by any details you remember about the message.\n\nTo summarise a message thread, type /tldr, followed by the number of messages you would like to summarise."
+      },
+      "examples": {
+        "description": "View example commands",
+        "message": "An example of the command you can use to search for a message is \"/search sports\". This will search for any messages that are related to sports.\n\nAn example of the command you can use to summarise a message thread is \"/tldr 10\". This will summarise the last 10 messages in the thread."
+      }
     }
+  }
 }
