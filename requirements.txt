@@ -16,6 +16,7 @@ Deprecated==1.2.18
 distro==1.9.0
 durationpy==0.9
 fastapi==0.115.9
+fastapi-security-telegram-webhook==0.2.0
 filelock==3.18.0
 flatbuffers==25.2.10
 fsspec==2025.3.2
