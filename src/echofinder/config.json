@@ -1,0 +1,12 @@
+{
+    "bot": {
+        "handlers": {
+            "start": {
+                "message": "Welcome to EchoFinder 2! I'm Finn, and I'm here to help you find any messages that you want to revisit, or summarise message threads of your choosing."
+            },
+            "help": {
+                "message": "To search for a message, type /search, followed by any details you remember about the message.\n\nTo summarise a message thread, type /tldr, followed by the number of messages you would like to summarise."
+            }
+        }
+    }
+}
