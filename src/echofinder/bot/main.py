@@ -1,10 +1,11 @@
 import telebot
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, Update
 import json
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Body, Depends
+from fastapi_security_telegram_webhook import OnlyTelegramNetworkWithSecret
 import uvicorn
 
-from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, TELEGRAM_BOT_SERVER_PORT, config
+from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, TELEGRAM_BOT_SERVER_PORT, TELEGRAM_WEBHOOK_SECRET, config
 from src.echofinder.bot.handlers import save_messages, search_messages, summarise_messages
 
 if not TELEGRAM_BOT_TOKEN:
@@ -199,8 +200,9 @@ def init_bot():
         
         print(f"Starting FastAPI server on port {TELEGRAM_BOT_SERVER_PORT}")
         app = FastAPI()
+        security = OnlyTelegramNetworkWithSecret(real_secret=TELEGRAM_WEBHOOK_SECRET)
         
-        @app.post("/webhook")
+        @app.post("/webhook", dependencies=[Depends(security)])
         async def webhook_handler(request: Request):
             print("Received webhook request")
             

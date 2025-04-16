@@ -134,6 +134,7 @@ jobs:
           ENV: ${{ secrets.ENV }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_WEBHOOK_URL: ${{ secrets.TELEGRAM_WEBHOOK_URL }}
+          TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
           CHROMA_CLIENT_HOST: ${{ secrets.CHROMA_CLIENT_HOST }}
           CHROMA_CLIENT_PORT: 443
           CHROMA_CLIENT_AUTH_CREDENTIALS: ${{ secrets.CHROMA_AUTH_TOKEN }}
@@ -146,6 +147,7 @@ jobs:
           heroku config:set ENV=$ENV --app $HEROKU_APP_NAME
           heroku config:set TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN --app $HEROKU_APP_NAME
           heroku config:set TELEGRAM_WEBHOOK_URL=$TELEGRAM_WEBHOOK_URL --app $HEROKU_APP_NAME
+          heroku config:set TELEGRAM_WEBHOOK_SECRET=$TELEGRAM_WEBHOOK_SECRET --app $HEROKU_APP_NAME
           heroku config:set CHROMA_CLIENT_HOST=$CHROMA_CLIENT_HOST --app $HEROKU_APP_NAME
           heroku config:set CHROMA_CLIENT_PORT=$CHROMA_CLIENT_PORT --app $HEROKU_APP_NAME
           heroku config:set CHROMA_CLIENT_AUTH_CREDENTIALS=$CHROMA_CLIENT_AUTH_CREDENTIALS --app $HEROKU_APP_NAME
