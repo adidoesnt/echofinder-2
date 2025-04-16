@@ -2,6 +2,7 @@ import telebot
 from telebot.types import Message
 
 from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, config
+from src.echofinder.bot.handlers import save_messages
 
 if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN is not set")
@@ -44,6 +45,12 @@ def tldr_handler(message: Message):
     print(f"Received tldr command from {message.from_user.username}")
     reply: str = f"{config['bot']['handlers']['tldr']['message']}"
     bot.reply_to(message, reply)
+    
+# Save all messages that are not commands
+@bot.message_handler(func=lambda message: True)
+def echo_all(message: Message):
+    print(f"Saving message from {message.from_user.username}: {message.text}")
+    save_messages([message])
     
 def set_bot_commands():
     commands = [
