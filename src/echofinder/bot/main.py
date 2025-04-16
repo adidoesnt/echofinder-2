@@ -3,7 +3,7 @@ from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 import json
 
 from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, config
-from src.echofinder.bot.handlers import save_messages, search_messages
+from src.echofinder.bot.handlers import save_messages, search_messages, summarise_messages
 
 if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN is not set")
@@ -113,8 +113,7 @@ def tldr_handler(message: Message):
         n = message.text.split(" ", 1)[1]
         print(f"Summarise {n} messages")
         
-        # TODO: Implement tldr functionality
-        reply = f"Summarising {n} messages"
+        reply = summarise_messages(n, message.chat.id)
         bot.reply_to(message, reply)
     except IndexError:
         reply = bot.reply_to(message, "How many messages would you like to summarise?")
@@ -124,8 +123,7 @@ def process_tldr_query(message: Message):
     n = message.text
     print(f"Processing tldr command for {n} messages")
     
-    # TODO: Implement tldr functionality
-    reply = f"Summarising {n} messages"
+    reply = summarise_messages(n, message.chat.id)
     bot.reply_to(message, reply)
     
 # Save all messages that are not commands

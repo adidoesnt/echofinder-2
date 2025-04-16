@@ -43,3 +43,12 @@ def search_embeddings(query: str, collection_name: str, where: dict[str, str]):
         "ids": results['ids'][0],
         "metadatas": results['metadatas'][0],
     }
+    
+def get_embeddings(collection_name: str, where: dict[str, str]):
+    print(f"Getting embeddings from collection: {collection_name}")
+    collection = client.get_or_create_collection(
+        name=collection_name,
+    )
+    
+    results = collection.get(where=where)
+    return results

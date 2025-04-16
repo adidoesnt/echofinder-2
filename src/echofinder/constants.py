@@ -22,6 +22,7 @@ CHROMA_N_RESULTS = os.getenv("CHROMA_N_RESULTS", 5)
 # OpenAI
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+SUMMARISATION_MODEL = os.getenv("SUMMARISATION_MODEL", "gpt-4o-mini")
 
 # Config
 config = None
