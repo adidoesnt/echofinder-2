@@ -138,6 +138,9 @@ jobs:
           CHROMA_CLIENT_AUTH_CREDENTIALS: ${{ secrets.CHROMA_AUTH_TOKEN }}
           CHROMA_CLIENT_AUTH_PROVIDER: chromadb.auth.token_authn.TokenAuthClientProvider
           CHROMA_COLLECTION_NAME: ${{ secrets.CHROMA_COLLECTION_NAME }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EMBEDDING_MODEL: ${{ secrets.EMBEDDING_MODEL }}
+          SUMMARISATION_MODEL: ${{ secrets.SUMMARISATION_MODEL }}
         run: |
           heroku config:set ENV=$ENV --app $HEROKU_APP_NAME
           heroku config:set TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN --app $HEROKU_APP_NAME
@@ -147,6 +150,9 @@ jobs:
           heroku config:set CHROMA_CLIENT_AUTH_CREDENTIALS=$CHROMA_CLIENT_AUTH_CREDENTIALS --app $HEROKU_APP_NAME
           heroku config:set CHROMA_CLIENT_AUTH_PROVIDER=$CHROMA_CLIENT_AUTH_PROVIDER --app $HEROKU_APP_NAME
           heroku config:set CHROMA_COLLECTION_NAME=$CHROMA_COLLECTION_NAME --app $HEROKU_APP_NAME
+          heroku config:set OPENAI_API_KEY=$OPENAI_API_KEY --app $HEROKU_APP_NAME
+          heroku config:set EMBEDDING_MODEL=$EMBEDDING_MODEL --app $HEROKU_APP_NAME
+          heroku config:set SUMMARISATION_MODEL=$SUMMARISATION_MODEL --app $HEROKU_APP_NAME
 
       - name: Set the stack to container
         run: heroku stack:set container --app $HEROKU_APP_NAME
