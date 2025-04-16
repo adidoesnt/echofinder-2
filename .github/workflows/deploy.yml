@@ -51,7 +51,10 @@ jobs:
           HEROKU_DB_APP_NAME: ${{ secrets.HEROKU_DB_APP_NAME }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          docker tag chromadb/chroma:0.5.3 registry.heroku.com/$HEROKU_DB_APP_NAME/web
+          echo "FROM chromadb/chroma:0.5.3" > Dockerfile.chromadb
+          echo "CMD chromadb run --host 0.0.0.0 --port $PORT" >> Dockerfile.chromadb
+
+          docker build -f Dockerfile.chromadb -t registry.heroku.com/$HEROKU_DB_APP_NAME/web .
           docker push registry.heroku.com/$HEROKU_DB_APP_NAME/web
 
       - name: Set environment variables
