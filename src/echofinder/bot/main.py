@@ -1,8 +1,10 @@
 import telebot
-from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, Update
 import json
+from fastapi import FastAPI, Request
+import uvicorn
 
-from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, config
+from src.echofinder.constants import TELEGRAM_BOT_TOKEN, ENV, TELEGRAM_WEBHOOK_URL, TELEGRAM_BOT_SERVER_PORT, config
 from src.echofinder.bot.handlers import save_messages, search_messages, summarise_messages
 
 if not TELEGRAM_BOT_TOKEN:
@@ -193,6 +195,21 @@ def init_bot():
     else:
         print(f"Setting webhook to {TELEGRAM_WEBHOOK_URL}")
         bot.set_webhook(url=TELEGRAM_WEBHOOK_URL)
-        
         print("Webhook set")
+        
+        print(f"Starting FastAPI server on port {TELEGRAM_BOT_SERVER_PORT}")
+        app = FastAPI()
+        
+        @app.post("/{token}")
+        async def webhook_handler(request: Request, token: str):
+            print("Received webhook request")
+            
+            if token != TELEGRAM_BOT_TOKEN:
+                print(f"Invalid token: {token}")
+                return {"ok": False}
+            
+            await bot.process_new_updates([Update.de_json(await request.json())])
+            return {"ok": True}
+        
+        uvicorn.run(app, host="0.0.0.0", port=int(TELEGRAM_BOT_SERVER_PORT))
         
