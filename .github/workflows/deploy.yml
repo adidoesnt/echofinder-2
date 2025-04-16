@@ -25,6 +25,18 @@ jobs:
       - name: Pull ChromaDB image
         run: docker pull chromadb/chroma:0.5.3
 
+      - name: Tag and push ChromaDB image
+        run: |
+          docker tag chromadb/chroma:0.5.3 registry.heroku.com/echofinder-chromadb/web
+          docker push registry.heroku.com/echofinder-chromadb/web
+
+      - name: Tag and push to Heroku
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: |
+          docker tag chromadb/chroma:0.5.3 registry.heroku.com/$HEROKU_APP_NAME/web
+          docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
       - name: Set environment variables
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -38,18 +50,6 @@ jobs:
           heroku config:set CHROMA_SERVER_PORT=$CHROMA_SERVER_PORT --app $HEROKU_APP_NAME
           heroku config:set CHROMA_SERVER_AUTHN_PROVIDER=$CHROMA_SERVER_AUTHN_PROVIDER --app $HEROKU_APP_NAME
           heroku config:set CHROMA_SERVER_AUTHN_CREDENTIALS=$CHROMA_SERVER_AUTHN_CREDENTIALS --app $HEROKU_APP_NAME
-
-      - name: Tag and push ChromaDB image
-        run: |
-          docker tag chromadb/chroma:0.5.3 registry.heroku.com/echofinder-chromadb/web
-          docker push registry.heroku.com/echofinder-chromadb/web
-
-      - name: Tag and push to Heroku
-        env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: |
-          docker tag chromadb/chroma:0.5.3 registry.heroku.com/$HEROKU_APP_NAME/web
-          docker push registry.heroku.com/$HEROKU_APP_NAME/web
 
       - name: Release the app
         env:
