@@ -29,9 +29,9 @@
 - `/help` - Get help.
 - `/examples` - Get examples of how to use the bot.
 - `/search <query>` - Search for messages in a conversation.
-    - The query can be omitted, in which case the bot will prompt you for a query.
+  - The query can be omitted, in which case the bot will prompt you for a query.
 - `/tldr <n>` - Summarise the last `n` messages in a conversation.
-    - The number of messages to summarise can be omitted, in which case the bot will prompt you for a number.
+  - The number of messages to summarise can be omitted, in which case the bot will prompt you for a number.
 
 ## Local Development
 
@@ -59,7 +59,15 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-5. Open up `docker-compose.yml` and comment out the `bot` service.
+5. Create a bot on Telegram using BotFather, and get the bot token.
+
+6. Create a `.env` file and populate it with the correct values from `.env.template`:
+
+```bash
+cp .env.template .env
+```
+
+7. Open up `docker-compose.yml` and comment out the `bot` service:
 
 ```bash
 # docker-compose.yml
@@ -102,16 +110,16 @@ networks:
     driver: bridge
 ```
 
-5. Spin up ChromaDB using Docker Compose:
+8. Spin up ChromaDB using Docker Compose:
 
 ```bash
 docker compose up -d
 ```
 
-6. Run the bot:
+9. Run the bot:
 
 ```bash
 python -m src.echofinder.main
 ```
 
-7. Interact with the bot on Telegram.
+10. Interact with the bot on Telegram.
