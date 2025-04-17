@@ -59,6 +59,49 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+5. Open up `docker-compose.yml` and comment out the `bot` service.
+
+```bash
+# docker-compose.yml
+
+services:
+  chromadb:
+    # Important: Don't change the image version, 0.5.4 has a bug with creating collections
+    image: chromadb/chroma:0.5.3
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    volumes:
+      - chroma_data:/data
+    networks:
+      - echofinder_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+#   bot:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     env_file:
+#       - .env
+#     depends_on:
+#       chromadb:
+#         condition: service_healthy
+#     networks:
+#       - echofinder_network
+
+volumes:
+  chroma_data:
+
+networks:
+  echofinder_network:
+    driver: bridge
+```
+
 5. Spin up ChromaDB using Docker Compose:
 
 ```bash
